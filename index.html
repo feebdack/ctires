@@ -108,17 +108,27 @@
       padding: 0;
       background: transparent;
       border-left: 0;
-      transform: translateY(-90px);
+      transform: translateY(-40px);
     }
-    .hero-description {
+    .hero-hours {
       position: absolute;
       top: 54px;
       left: 38px;
       width: min(560px, 58vw);
-      padding: 18px 22px 20px;
+      min-height: 92px;
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      align-items: center;
+      gap: 22px;
+      padding: 16px 22px 18px;
       background: rgba(5,7,8,.72);
       border-left: 7px solid var(--red);
     }
+    .hero-appointment { margin: 0; font: clamp(18px, 1.6vw, 23px)/.98 var(--display); letter-spacing: .025em; text-transform: uppercase; }
+    .hero-appointment span { display: block; margin-top: 7px; color: rgba(255,255,255,.82); font-size: .82em; }
+    .hero-hours-schedule { min-width: 0; padding-left: 18px; border-left: 1px solid rgba(255,255,255,.25); }
+    .hero-hours-status { margin-bottom: 8px; color: rgba(255,255,255,.9); }
+    .hero-hours-detail { display: grid; gap: 2px; margin: 0; color: rgba(255,255,255,.82); font-size: 12px; line-height: 1.2; }
     .hero h1 {
       max-width: 9ch;
       margin: 0;
@@ -126,7 +136,6 @@
       letter-spacing: -.018em;
       text-transform: uppercase;
     }
-    .hero-description p { margin: 0; font-size: clamp(18px, 1.8vw, 25px); line-height: 1.25; }
     .section-kicker {
       margin: 0;
       font: 34px/1 var(--display);
@@ -265,6 +274,8 @@
     .status { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
     .status-dot { width: 9px; height: 9px; background: #dca31b; border-radius: 50%; }
     .status.open .status-dot { background: #48c66b; }
+    .status.soon .status-dot { background: #dca31b; }
+    .status.closed .status-dot { background: var(--red); }
     .hours-row { display: grid; grid-template-columns: 92px 1fr; gap: 14px; color: #e0e1e1; font-size: 15px; }
     .map-wrap { min-height: 300px; overflow: hidden; border: 1px solid rgba(255,255,255,.5); background: #171a1c; }
     .map-wrap iframe { width: 100%; height: 100%; min-height: 300px; border: 0; filter: grayscale(1) invert(.9) contrast(1.05); }
@@ -333,10 +344,13 @@
       .hero-image { object-position: 58% center; }
       .hero-shade { background: rgba(0,0,0,.25); }
       .hero-content { align-items: end; padding: 22px 16px 26px; }
-      .hero-copy { width: 100%; }
-      .hero-description { top: 22px; left: 16px; width: calc(100% - 32px); padding: 14px 16px 15px; border-left-width: 5px; }
+      .hero-copy { width: 100%; transform: translateY(-90px); }
+      .hero-hours { top: 22px; left: 16px; width: calc(100% - 32px); gap: 12px; padding: 14px 16px 15px; border-left-width: 5px; }
+      .hero-appointment { font-size: 20px; }
+      .hero-hours-schedule { padding-left: 12px; }
+      .hero-hours-status { margin-bottom: 6px; font-size: 12px; }
+      .hero-hours-detail { font-size: 11px; }
       .hero h1 { max-width: 7ch; font-size: clamp(66px, 20vw, 98px); }
-      .hero-description p { font-size: 18px; }
       .services-label { width: 132px; padding-inline: 18px; font-size: 21px; }
       .services-list { display: flex; overflow-x: auto; padding: 20px 8px 22px; scrollbar-width: thin; }
       .service { min-width: 130px; min-height: 48px; padding-inline: 14px; font-size: 24px; }
@@ -417,8 +431,12 @@
         <div class="hero-copy">
           <h1 id="hero-title">Tires.<br>Wheels.<br>Alignments.</h1>
         </div>
-        <div class="hero-description">
-          <p>Serving commuters, lowered cars, lifted trucks, commercial vehicles &amp; electric vehicles in Hayward, CA.</p>
+        <div class="hero-hours" role="group" aria-label="Appointments and hours">
+          <p class="hero-appointment">Call or text for appointment<span>Walk-ins welcome</span></p>
+          <div class="hero-hours-schedule">
+            <div class="status hero-hours-status" id="hero-open-status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span>Checking today’s hours…</span></div>
+            <p class="hero-hours-detail"><span>Mon–Fri 9 AM–6 PM</span><span>Sat 9 AM–4 PM</span><span>Sun Closed</span></p>
+          </div>
         </div>
       </div>
     </section>
@@ -559,11 +577,48 @@
     const statusValue = Object.fromEntries(statusParts.map(({ type, value }) => [type, value]));
     const dayIndex = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(statusValue.weekday);
     const minutesNow = Number(statusValue.hour) * 60 + Number(statusValue.minute);
-    const closingMinutes = dayIndex === 6 ? 16 * 60 : 18 * 60;
-    const isOpen = dayIndex >= 1 && dayIndex <= 6 && minutesNow >= 9 * 60 && minutesNow < closingMinutes;
-    const status = document.querySelector('#open-status');
-    status.classList.toggle('open', isOpen);
-    status.querySelector('span:last-child').textContent = isOpen ? `Open now · closes ${dayIndex === 6 ? '4' : '6'} PM` : 'Closed now';
+    const openingMinutes = 9 * 60;
+    const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const formatDuration = (minutes) => `${minutes} minute${minutes === 1 ? '' : 's'}`;
+    const nextOpening = (fromDay) => {
+      for (let daysAhead = 1; daysAhead <= 7; daysAhead += 1) {
+        const nextDay = (fromDay + daysAhead) % 7;
+        if (nextDay !== 0) return { day: nextDay, daysAhead };
+      }
+    };
+    const getShopStatus = (currentDay, currentMinutes) => {
+      const isOpenDay = currentDay >= 1 && currentDay <= 6;
+      const closingMinutes = currentDay === 6 ? 16 * 60 : 18 * 60;
+
+      if (isOpenDay && currentMinutes >= openingMinutes && currentMinutes < closingMinutes) {
+        const minutesUntilClose = closingMinutes - currentMinutes;
+        return {
+          text: minutesUntilClose <= 60 ? `Open · closing in ${formatDuration(minutesUntilClose)}` : 'Open',
+          state: 'open'
+        };
+      }
+
+      if (isOpenDay && currentMinutes < openingMinutes) {
+        const minutesUntilOpen = openingMinutes - currentMinutes;
+        return {
+          text: minutesUntilOpen <= 60 ? `Closed · opens in ${formatDuration(minutesUntilOpen)}` : 'Closed · opens at 9 AM',
+          state: minutesUntilOpen <= 60 ? 'soon' : 'closed'
+        };
+      }
+
+      const next = nextOpening(currentDay);
+      const isWeekendGap = currentDay === 0 || currentDay === 6;
+      const openingLabel = isWeekendGap ? `opens ${weekdayNames[next.day]} 9 AM` : next.daysAhead === 1 ? 'opens tomorrow 9 AM' : `opens ${weekdayNames[next.day]} 9 AM`;
+      return { text: `Closed · ${openingLabel}`, state: 'closed' };
+    };
+    const shopStatus = getShopStatus(dayIndex, minutesNow);
+    const statuses = [document.querySelector('#open-status'), document.querySelector('#hero-open-status')];
+    statuses.forEach((status) => {
+      status.classList.toggle('open', shopStatus.state === 'open');
+      status.classList.toggle('soon', shopStatus.state === 'soon');
+      status.classList.toggle('closed', shopStatus.state === 'closed');
+      status.querySelector('span:last-child').textContent = shopStatus.text;
+    });
     document.querySelector('#year').textContent = new Date().getFullYear();
 
     const mobileBar = document.querySelector('.mobile-bar');

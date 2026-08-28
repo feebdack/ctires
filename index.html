@@ -34,7 +34,6 @@
       font-family: var(--body);
       -webkit-font-smoothing: antialiased;
     }
-    body.modal-open { overflow: hidden; }
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     button { color: inherit; font: inherit; }
@@ -129,6 +128,22 @@
     .hero-hours-schedule { min-width: 0; padding-left: 18px; border-left: 1px solid rgba(255,255,255,.25); }
     .hero-hours-status { margin-bottom: 8px; color: rgba(255,255,255,.9); }
     .hero-hours-detail { display: grid; gap: 2px; margin: 0; color: rgba(255,255,255,.82); font-size: 12px; line-height: 1.2; }
+    @media (min-width: 1500px) {
+      .hero-hours {
+        top: 54px;
+        right: 38px;
+        left: auto;
+        width: min(660px, 43vw);
+        min-height: 112px;
+        gap: 28px;
+        padding: 20px 26px 22px;
+      }
+      .hero-copy { transform: translateY(0); }
+      .hero-appointment { font-size: clamp(20px, 1.7vw, 27px); }
+      .hero-hours-schedule { padding-left: 22px; }
+      .hero-hours-status { font-size: 15px; }
+      .hero-hours-detail { font-size: 14px; }
+    }
     .hero h1 {
       max-width: 9ch;
       margin: 0;
@@ -238,24 +253,25 @@
       padding: 0;
       border: 0;
       background: #16191b;
-      cursor: zoom-in;
+      cursor: pointer;
     }
     .gallery-item:first-child { grid-row: 1 / 3; }
     .gallery-item:nth-child(4) { grid-column: 3; grid-row: 1 / 3; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease, opacity .3s ease; }
     .gallery-item:hover img { transform: scale(1.025); opacity: .86; }
-    .gallery-item::after {
-      content: "View";
-      position: absolute; right: 14px; bottom: 14px;
-      padding: 6px 8px;
-      background: rgba(0,0,0,.78);
-      font: 17px/1 var(--display);
-      letter-spacing: .06em;
-      text-transform: uppercase;
+    .gallery-instagram {
+      position: absolute; top: 14px; right: 14px;
+      display: grid;
+      place-items: center;
+      width: 44px; height: 44px;
+      color: #fff;
+      font-size: 22px;
       opacity: 0;
-      transition: opacity .2s ease;
+      transform: translateY(-4px);
+      transition: opacity .2s ease, transform .2s ease;
     }
-    .gallery-item:hover::after, .gallery-item:focus-visible::after { opacity: 1; }
+    .gallery-item:hover .gallery-instagram,
+    .gallery-item:focus-visible .gallery-instagram { opacity: 1; transform: translateY(0); }
     .gallery-item:nth-child(1) img { object-position: center 72%; }
     .gallery-item:nth-child(3) img { object-position: center 38%; }
 
@@ -291,24 +307,6 @@
       border-top: 1px solid var(--line);
       color: #8f9497;
       font-size: 12px;
-    }
-    dialog {
-      width: min(92vw, 1080px);
-      max-height: 92vh;
-      padding: 0;
-      border: 1px solid rgba(255,255,255,.4);
-      background: #060708;
-      color: #fff;
-    }
-    dialog::backdrop { background: rgba(0,0,0,.88); }
-    .lightbox-image { width: 100%; max-height: 86vh; object-fit: contain; }
-    .dialog-close {
-      position: absolute; top: 12px; right: 12px; z-index: 2;
-      width: 48px; height: 48px;
-      border: 1px solid #fff;
-      border-radius: 50%;
-      background: rgba(0,0,0,.8);
-      cursor: pointer;
     }
     .mobile-bar { display: none; }
 
@@ -489,18 +487,22 @@
         </a>
       </div>
       <div class="gallery">
-        <button class="gallery-item" type="button" data-full="assets/tesla-hero.jpg" data-alt="White Tesla with custom wheels outside Castellon Tires">
+        <a class="gallery-item" href="https://www.instagram.com/castellontires_/" target="_blank" rel="noopener noreferrer" aria-label="View the white Tesla with custom wheels on Instagram">
           <img src="assets/tesla-hero.jpg" alt="White Tesla with custom wheels outside Castellon Tires">
-        </button>
-        <button class="gallery-item" type="button" data-full="assets/chrome-wheel.jpg" data-alt="Detailed chrome custom wheel">
+          <span class="gallery-instagram" aria-hidden="true"><i class="fa-brands fa-instagram"></i></span>
+        </a>
+        <a class="gallery-item" href="https://www.instagram.com/castellontires_/" target="_blank" rel="noopener noreferrer" aria-label="View the custom wheel detail on Instagram">
           <img src="assets/chrome-wheel.jpg" alt="Detailed chrome custom wheel">
-        </button>
-        <button class="gallery-item" type="button" data-full="assets/storefront.jpg" data-alt="Castellon Tires storefront on Depot Road">
+          <span class="gallery-instagram" aria-hidden="true"><i class="fa-brands fa-instagram"></i></span>
+        </a>
+        <a class="gallery-item" href="https://www.instagram.com/castellontires_/" target="_blank" rel="noopener noreferrer" aria-label="View the Castellon Tires storefront on Instagram">
           <img src="assets/storefront.jpg" alt="Castellon Tires storefront on Depot Road">
-        </button>
-        <button class="gallery-item" type="button" data-full="assets/yellow-lamborghini.jpg" data-alt="Yellow Lamborghini inside Castellon Tires">
+          <span class="gallery-instagram" aria-hidden="true"><i class="fa-brands fa-instagram"></i></span>
+        </a>
+        <a class="gallery-item" href="https://www.instagram.com/castellontires_/" target="_blank" rel="noopener noreferrer" aria-label="View the yellow Lamborghini on Instagram">
           <img src="assets/yellow-lamborghini.jpg" alt="Yellow Lamborghini inside Castellon Tires">
-        </button>
+          <span class="gallery-instagram" aria-hidden="true"><i class="fa-brands fa-instagram"></i></span>
+        </a>
       </div>
     </section>
 
@@ -536,40 +538,12 @@
     <span>© <span id="year"></span> Castellon Tires</span>
   </footer>
 
-  <dialog id="lightbox" aria-label="Gallery image viewer">
-    <button class="dialog-close" type="button" aria-label="Close image viewer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-    <img class="lightbox-image" src="assets/alignment-bay.jpg" alt="">
-  </dialog>
-
   <nav class="mobile-bar" aria-label="Persistent mobile actions">
     <a class="action action-primary" href="tel:+15103950626"><i class="fa-solid fa-phone" aria-hidden="true"></i><span class="action-label">Call</span></a>
     <a class="action" href="https://maps.app.goo.gl/A4L7ikr234X7N7zA7" target="_blank" rel="noopener"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span class="action-label">Directions</span></a>
   </nav>
 
   <script>
-    const lightbox = document.querySelector('#lightbox');
-    const lightboxImage = lightbox.querySelector('.lightbox-image');
-
-    document.querySelectorAll('.gallery-item').forEach((item) => {
-      item.addEventListener('click', () => {
-        lightboxImage.src = item.dataset.full;
-        lightboxImage.alt = item.dataset.alt;
-        lightbox.showModal();
-        document.body.classList.add('modal-open');
-      });
-    });
-
-    const closeLightbox = () => {
-      lightbox.close();
-      document.body.classList.remove('modal-open');
-    };
-
-    lightbox.querySelector('.dialog-close').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (event) => {
-      if (event.target === lightbox) closeLightbox();
-    });
-    lightbox.addEventListener('close', () => document.body.classList.remove('modal-open'));
-
     // Calculate the public shop status in Hayward time, independent of the visitor's timezone.
     const statusParts = new Intl.DateTimeFormat('en-US', {
       timeZone: 'America/Los_Angeles', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false

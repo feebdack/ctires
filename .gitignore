@@ -1,6 +1,9 @@
 design-qa.md
 qa/
+.DS_Store
 references/
 assets/castellon-logo-lockup.jpg
 assets/castellon-logo.jpg
 assets/red-suv.jpg
+.serena/
+audit/

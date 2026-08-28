@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#090b0c">
-  <title>Castellon Tires | Private Demo</title>
-  <meta name="description" content="Unofficial private demo for Castellon Tires in Hayward, California.">
+  <title>Castellon Tires</title>
+  <meta name="description" content="Castellon Tires in Hayward, California.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -105,7 +105,17 @@
     }
     .hero-copy {
       width: min(500px, 46vw);
-      padding: 28px 28px 30px;
+      padding: 0;
+      background: transparent;
+      border-left: 0;
+      transform: translateY(-90px);
+    }
+    .hero-description {
+      position: absolute;
+      top: 54px;
+      left: 38px;
+      width: min(560px, 58vw);
+      padding: 18px 22px 20px;
       background: rgba(5,7,8,.72);
       border-left: 7px solid var(--red);
     }
@@ -116,10 +126,7 @@
       letter-spacing: -.018em;
       text-transform: uppercase;
     }
-    .red-rule { width: 220px; height: 5px; margin: 25px 0 20px; background: var(--red); }
-    .hero p { max-width: 23ch; margin: 0; font-size: clamp(20px, 2.1vw, 30px); line-height: 1.32; }
-    .hero-mobile-actions { display: none; }
-
+    .hero-description p { margin: 0; font-size: clamp(18px, 1.8vw, 25px); line-height: 1.25; }
     .section-kicker {
       margin: 0;
       font: 34px/1 var(--display);
@@ -274,8 +281,6 @@
       color: #8f9497;
       font-size: 12px;
     }
-    .demo-note { font-style: italic; }
-
     dialog {
       width: min(92vw, 1080px);
       max-height: 92vh;
@@ -315,25 +320,23 @@
 
     @media (max-width: 700px) {
       body { padding-bottom: 72px; }
-      .site-header { min-height: 118px; }
-      .header-inner { min-height: 118px; display: grid; gap: 8px; padding: 12px 16px 10px; }
-      .brand { display: flex; justify-content: center; }
-      .brand img { width: 220px; }
-      .top-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .site-header { min-height: 78px; }
+      .header-inner { min-height: 78px; display: flex; gap: 8px; padding: 8px 10px; }
+      .brand { display: flex; flex: 1 1 auto; min-width: 0; justify-content: flex-start; }
+      .brand img { width: clamp(140px, 42vw, 175px); }
+      .top-actions { display: flex; flex: 0 0 auto; gap: 6px; }
       .top-actions .action { min-height: 48px; justify-content: center; padding: 7px 8px; }
       .top-actions .action i { font-size: 17px; }
-      .top-actions .action-label { font-size: 19px; }
+      .top-actions .action { gap: 8px; }
+      .top-actions .action-label { font-size: 18px; }
       .hero, .hero-content { min-height: 710px; }
       .hero-image { object-position: 58% center; }
       .hero-shade { background: rgba(0,0,0,.25); }
       .hero-content { align-items: end; padding: 22px 16px 26px; }
-      .hero-copy { width: 100%; padding: 18px 18px 20px; background: rgba(4,6,7,.76); border-left-width: 5px; }
+      .hero-copy { width: 100%; }
+      .hero-description { top: 22px; left: 16px; width: calc(100% - 32px); padding: 14px 16px 15px; border-left-width: 5px; }
       .hero h1 { max-width: 7ch; font-size: clamp(66px, 20vw, 98px); }
-      .red-rule { width: 150px; height: 4px; margin: 17px 0 14px; }
-      .hero p { max-width: 24ch; font-size: 19px; }
-      .hero-mobile-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
-      .hero-mobile-actions .action { justify-content: center; min-height: 50px; padding: 8px; }
-      .hero-mobile-actions .action-label { font-size: 21px; }
+      .hero-description p { font-size: 18px; }
       .services-label { width: 132px; padding-inline: 18px; font-size: 21px; }
       .services-list { display: flex; overflow-x: auto; padding: 20px 8px 22px; scrollbar-width: thin; }
       .service { min-width: 130px; min-height: 48px; padding-inline: 14px; font-size: 24px; }
@@ -376,6 +379,11 @@
       .mobile-bar .action-detail { display: none; }
     }
 
+    @media (max-width: 359px) {
+      .top-actions .action { width: 48px; padding-inline: 0; }
+      .top-actions .action-copy { display: none; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; }
@@ -389,11 +397,11 @@
         <img src="assets/castellon-logo.png" alt="Castellon Tires — Wheels, Tires, Alignment">
       </a>
       <nav class="top-actions" aria-label="Primary actions">
-        <a class="action action-primary" href="tel:+15103950626">
+        <a class="action action-primary" href="tel:+15103950626" aria-label="Call Castellon Tires">
           <i class="fa-solid fa-phone" aria-hidden="true"></i>
           <span class="action-copy"><span class="action-label">Call Now</span><span class="action-detail">(510) 395-0626</span></span>
         </a>
-        <a class="action" href="https://maps.app.goo.gl/A4L7ikr234X7N7zA7" target="_blank" rel="noopener">
+        <a class="action" href="https://maps.app.goo.gl/A4L7ikr234X7N7zA7" target="_blank" rel="noopener" aria-label="Get directions to Castellon Tires">
           <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
           <span class="action-copy"><span class="action-label">Directions</span><span class="action-detail">3117 Depot Rd, Hayward</span></span>
         </a>
@@ -403,17 +411,14 @@
 
   <main id="top">
     <section class="hero shell" aria-labelledby="hero-title">
-      <img class="hero-image" src="assets/tesla-hero.jpg" alt="White Tesla with custom wheels outside Castellon Tires">
+      <img class="hero-image" src="assets/blue-charger.jpg" alt="Blue car with custom wheels outside Castellon Tires">
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-content">
         <div class="hero-copy">
           <h1 id="hero-title">Tires.<br>Wheels.<br>Alignments.</h1>
-          <div class="red-rule" aria-hidden="true"></div>
-          <p>Hayward’s shop for daily drivers, trucks, lowered, lifted &amp; electric.</p>
-          <div class="hero-mobile-actions" aria-label="Hero actions">
-            <a class="action action-primary" href="tel:+15103950626"><i class="fa-solid fa-phone" aria-hidden="true"></i><span class="action-label">Call</span></a>
-            <a class="action" href="https://maps.app.goo.gl/A4L7ikr234X7N7zA7" target="_blank" rel="noopener"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span class="action-label">Directions</span></a>
-          </div>
+        </div>
+        <div class="hero-description">
+          <p>Serving commuters, lowered cars, lifted trucks, commercial vehicles &amp; electric vehicles in Hayward, CA.</p>
         </div>
       </div>
     </section>
@@ -434,7 +439,7 @@
         <div class="rating-value">4.9</div>
         <div class="stars" aria-label="4.9 out of 5 stars">★★★★★</div>
         <p>Google rating</p>
-        <small>93 reviews captured for this demo</small>
+        <small>93 Google reviews</small>
       </div>
       <div class="review-panel">
         <h2 class="section-kicker" id="reviews-title">Real Reviews. Real Customers.</h2>
@@ -466,8 +471,8 @@
         </a>
       </div>
       <div class="gallery">
-        <button class="gallery-item" type="button" data-full="assets/alignment-bay.jpg" data-alt="Red performance car on the Castellon Tires alignment rack">
-          <img src="assets/alignment-bay.jpg" alt="Red performance car on the Castellon Tires alignment rack">
+        <button class="gallery-item" type="button" data-full="assets/tesla-hero.jpg" data-alt="White Tesla with custom wheels outside Castellon Tires">
+          <img src="assets/tesla-hero.jpg" alt="White Tesla with custom wheels outside Castellon Tires">
         </button>
         <button class="gallery-item" type="button" data-full="assets/chrome-wheel.jpg" data-alt="Detailed chrome custom wheel">
           <img src="assets/chrome-wheel.jpg" alt="Detailed chrome custom wheel">
@@ -511,7 +516,6 @@
 
   <footer class="site-footer shell">
     <span>© <span id="year"></span> Castellon Tires</span>
-    <span class="demo-note">Unofficial private demo — business details should be confirmed before launch.</span>
   </footer>
 
   <dialog id="lightbox" aria-label="Gallery image viewer">

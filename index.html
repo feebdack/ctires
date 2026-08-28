@@ -124,7 +124,7 @@
       background: rgba(5,7,8,.72);
       border-left: 7px solid var(--red);
     }
-    .hero-appointment { margin: 0; font: clamp(18px, 1.6vw, 23px)/.98 var(--display); letter-spacing: .025em; text-transform: uppercase; }
+    .hero-appointment { display: block; margin: 0; font: clamp(18px, 1.6vw, 23px)/.98 var(--display); letter-spacing: .025em; text-transform: uppercase; }
     .hero-appointment span { display: block; margin-top: 7px; color: rgba(255,255,255,.82); font-size: .82em; }
     .hero-hours-schedule { min-width: 0; padding-left: 18px; border-left: 1px solid rgba(255,255,255,.25); }
     .hero-hours-status { margin-bottom: 8px; color: rgba(255,255,255,.9); }
@@ -339,7 +339,7 @@
       .top-actions .action i { font-size: 17px; }
       .top-actions .action { gap: 8px; }
       .top-actions .action-label { font-size: 18px; }
-      .hero, .hero-content { min-height: 710px; }
+      .hero, .hero-content { min-height: clamp(540px, 78svh, 640px); }
       .hero-image { object-position: 58% center; }
       .hero-shade { background: rgba(0,0,0,.25); }
       .hero-content { align-items: end; padding: 22px 16px 26px; }
@@ -432,7 +432,7 @@
           <h1 id="hero-title">Tires.<br>Wheels.<br>Alignments.</h1>
         </div>
         <div class="hero-hours" role="group" aria-label="Appointments and hours">
-          <p class="hero-appointment">Call or text for appointment<span>Walk-ins welcome</span></p>
+          <a class="hero-appointment" href="tel:+15103950626" aria-label="Call or text Castellon Tires at (510) 395-0626">Call or text for appointment<span>Walk-ins welcome</span></a>
           <div class="hero-hours-schedule">
             <div class="status hero-hours-status" id="hero-open-status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span>Checking today’s hours…</span></div>
             <p class="hero-hours-detail"><span>Mon–Fri 9 AM–6 PM</span><span>Sat 9 AM–4 PM</span><span>Sun Closed</span></p>

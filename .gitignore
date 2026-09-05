@@ -2,8 +2,16 @@ design-qa.md
 qa/
 .DS_Store
 references/
-assets/castellon-logo-lockup.jpg
-assets/castellon-logo.jpg
-assets/red-suv.jpg
+docs/assets/castellon-logo-lockup.jpg
+docs/assets/castellon-logo.jpg
+docs/assets/red-suv.jpg
 .serena/
 audit/
+
+# Internal datasets & supplier pricing data (strictly ignored)
+data/
+scripts/raw/
+*.raw.json
+master_catalog.json
+.venv/
+__pycache__/
